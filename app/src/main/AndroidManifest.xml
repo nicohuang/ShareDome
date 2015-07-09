@@ -2,7 +2,7 @@
 <manifest
     package="hwz.com.sharedome"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!--权限-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -31,21 +31,6 @@
             </intent-filter>
         </activity>
 
-        <!--自定义广播-->
-        <receiver
-            android:name="hwz.com.sharedome.mi.MyMessageReceiver"
-            android:exported="true">
-            <!--这里com.xiaomi.mipushdemo.DemoMessageRreceiver改成app中定义的完整类名-->
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.ERROR"/>
-            </intent-filter>
-        </receiver>
         <!--订阅服务-->
         <service
             android:name="com.xiaomi.push.service.XMPushService"
@@ -78,6 +63,7 @@
             </intent-filter>
         </receiver>
 
+        <!--自定义广播-->
         <receiver
             android:name="hwz.com.sharedome.mi.DemoMessageReceiver"
             android:exported="true" >

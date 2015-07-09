@@ -8,72 +8,80 @@ import android.os.Process;
 import android.util.Log;
 
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
+import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.List;
 
-/**
- * 1、为了打开客户端的日志，便于在开发过程中调试，需要自定义一个Application。
- * 并将自定义的application注册在AndroidManifest.xml文件中
- * 2、为了提高push的注册率，您可以在Application的onCreate中初始化push。你也可以根据需要，在其他地方初始化push。
- * 
- * @author wangkuiwei
- * 
+/**为了打开客户端的日志，便于在开发过程中调试，需要自定义一个Application。
+ *  @author nico
  */
-public class DemoApplication extends Application {
+public class DemoApplication extends Application
+{
 
-    // user your appid the key.
+    //APP ID
     public static final String APP_ID = "1000270";
-    // user your appid the key.
+    //APP KEY
     public static final String APP_KEY = "670100056270";
 
     // 此TAG在adb logcat中检索自己所需要的信息， 只需在命令行终端输入 adb logcat | grep
-    // com.xiaomi.mipushdemo
+    // hwz.com.sharedome包名
     public static final String TAG = "hwz.com.sharedome";
 
     private static DemoMessageReceiver.DemoHandler handler = null;
 
-
+    /**
+     * 初始化push
+     */
     @Override
     public void onCreate() {
         super.onCreate();
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
-        if (shouldInit()) {
+        if (shouldInit())
+        {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);
-
         }
 
-        LoggerInterface newLogger = new LoggerInterface() {
+        LoggerInterface newLogger = new LoggerInterface()
+        {
 
             @Override
-            public void setTag(String tag) {
+            public void setTag(String tag)
+            {
                 // ignore
             }
 
             @Override
-            public void log(String content, Throwable t) {
+            public void log(String content, Throwable t)
+            {
                 Log.d(TAG, content, t);
             }
 
             @Override
-            public void log(String content) {
+            public void log(String content)
+            {
                 Log.d(TAG, content);
             }
         };
-        //Logger.setLogger(DemoApplication.this, newLogger);
+        Logger.setLogger(DemoApplication.this, newLogger);
         if (handler == null)
+        {
             handler = new DemoMessageReceiver.DemoHandler(getApplicationContext());
+        }
     }
 
-    private boolean shouldInit() {
+    private boolean shouldInit()
+    {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
         String mainProcessName = getPackageName();
         int myPid = Process.myPid();
-        for (RunningAppProcessInfo info : processInfos) {
-            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+        for (RunningAppProcessInfo info : processInfos)
+        {
+            if (info.pid == myPid && mainProcessName.equals(info.processName))
+            {
                 return true;
             }
         }
@@ -81,7 +89,8 @@ public class DemoApplication extends Application {
     }
 
 
-    public static DemoMessageReceiver.DemoHandler getHandler() {
+    public static DemoMessageReceiver.DemoHandler getHandler()
+    {
         return handler;
     }
 }

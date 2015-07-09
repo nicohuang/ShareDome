@@ -21,28 +21,16 @@ import java.util.List;
 import hwz.com.sharedome.R;
 
 /**
- * 1、PushMessageReceiver是个抽象类，该类继承了BroadcastReceiver。
- * 2、需要将自定义的DemoMessageReceiver注册在AndroidManifest.xml文件中 <receiver
- * android:exported="true"
- * android:name="com.xiaomi.mipushdemo.DemoMessageReceiver"> <intent-filter>
- * <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" /> </intent-filter>
- * <intent-filter> <action android:name="com.xiaomi.mipush.ERROR" />
- * </intent-filter> <intent-filter>
- *  <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" /></intent-filter>
- *  </receiver>
- * 3、DemoMessageReceiver的onReceivePassThroughMessage方法用来接收服务器向客户端发送的透传消息
- * 4、DemoMessageReceiver的onNotificationMessageClicked方法用来接收服务器向客户端发送的通知消息，
- * 这个回调方法会在用户手动点击通知后触发
- * 5、DemoMessageReceiver的onNotificationMessageArrived方法用来接收服务器向客户端发送的通知消息，
- * 这个回调方法是在通知消息到达客户端时触发。另外应用在前台时不弹出通知的通知消息到达客户端也会触发这个回调函数
- * 6、DemoMessageReceiver的onCommandResult方法用来接收客户端向服务器发送命令后的响应结果
- * 7、DemoMessageReceiver的onReceiveRegisterResult方法用来接收客户端向服务器发送注册命令后的响应结果
- * 8、以上这些方法运行在非UI线程中
- * 
- * @author mayixiang
+ * PushMessageReceiver是个抽象类，该类继承了BroadcastReceiver。
+ * @author nico
  */
+
 public class DemoMessageReceiver extends PushMessageReceiver {
-    
+    /**
+     * 接收服务器向客户端发送的透传消息
+     * @param context
+     * @param message
+     */
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage message){
         Log.v(DemoApplication.TAG,
@@ -56,7 +44,12 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         }
         DemoApplication.getHandler().sendMessage(msg);
     }
-    
+
+    /**
+     * 接收服务器向客户端发送的通知消息
+     * @param context
+     * @param message
+     */
     @Override
     public void onNotificationMessageClicked(Context context, MiPushMessage message){
         Log.v(DemoApplication.TAG,
@@ -70,7 +63,13 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         }
         DemoApplication.getHandler().sendMessage(msg);
     }
-    
+
+    /**
+     * 接收服务器向客户端发送的通知消息，
+     * 这个回调方法是在通知消息到达客户端时触发。另外应用在前台时不弹出通知的通知消息到达客户端也会触发这个回调函数
+     * @param context
+     * @param message
+     */
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage message){
         Log.v(DemoApplication.TAG,
@@ -85,6 +84,11 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         DemoApplication.getHandler().sendMessage(msg);
     }
 
+    /**
+     * 接收客户端向服务器发送命令后的响应结果
+     * @param context
+     * @param message
+     */
     @Override
     public void onCommandResult(Context context, MiPushCommandMessage message) {
         Log.v(DemoApplication.TAG,
@@ -151,7 +155,12 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         msg.obj = log;
         DemoApplication.getHandler().sendMessage(msg);
     }
-    
+
+    /**
+     * 接收客户端向服务器发送注册命令后的响应结果
+     * @param context
+     * @param message
+     */
     @Override
     public void onReceiveRegisterResult(Context context, MiPushCommandMessage message){
         Log.v(DemoApplication.TAG,
@@ -173,26 +182,35 @@ public class DemoMessageReceiver extends PushMessageReceiver {
         DemoApplication.getHandler().sendMessage(msg);
     }
 
+    /**
+     * 获取时间
+     * @return
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getSimpleDate() {
         return new SimpleDateFormat("MM-dd hh:mm:ss").format(new Date());
     }
 
-    public static class DemoHandler extends Handler {
+    public static class DemoHandler extends Handler
+    {
 
         private Context context;
 
-        public DemoHandler(Context context) {
+        public DemoHandler(Context context)
+        {
             this.context = context;
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             String s = (String) msg.obj;
-            if (MainActivity.sMainActivity != null) {
+            if (MainActivity.sMainActivity != null)
+            {
                 MainActivity.sMainActivity.refreshLogInfo();
             }
-            if (!TextUtils.isEmpty(s)) {
+            if (!TextUtils.isEmpty(s))
+            {
                 Toast.makeText(context, s, Toast.LENGTH_LONG).show();
             }
         }

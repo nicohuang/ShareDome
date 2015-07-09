@@ -25,10 +25,11 @@ import hwz.com.sharedome.R;
  * @author wangkuiwei
  */
 public class MainActivity extends Activity {
-
+    //消息集合
     public static List<String> logList = new ArrayList<String>();
 
     public static MainActivity sMainActivity = null;
+    //显示log的消息提示
     public TextView logView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +37,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         sMainActivity = this;
         logView = (TextView)findViewById(R.id.log);
-        // 设置别名
-        findViewById(R.id.set_alias).setOnClickListener(new OnClickListener() {
 
+        // 设置别名
+        findViewById(R.id.set_alias).setOnClickListener(new OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 final EditText editText = new EditText(MainActivity.this);
                 new AlertDialog.Builder(MainActivity.this)
                 .setTitle(R.string.set_alias)
