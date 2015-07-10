@@ -72,6 +72,10 @@ public class DemoApplication extends Application
         }
     }
 
+    /**
+     * 应用主进程初始化
+     * @return
+     */
     private boolean shouldInit()
     {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
